@@ -2,28 +2,35 @@ const customerModel=require("../model/customer")
 const {customerJoi,loginJoi}=require("../validation/joivalidation")
 const jwt=require("jsonwebtoken")
 
+//=====================create========================================
 const createCustomer=async (req,res)=>{
-    let data=req.body
-    if (Object.keys(req.body).length == 0) {
-        return res.status(400).send({ status: false, message: "Please Enter data in body" })
-    }
+try {
+        let data=req.body
+        if (Object.keys(req.body).length == 0) {
+            return res.status(400).send({ status: false, message: "Please Enter data in body" })
+        }
+        //joi validation
+        let error
+        const validation=await customerJoi.validateAsync(data).then(()=>true).catch((err)=>{error=err.message;return null})
+        if(!validation) return res.status(400).send({  status: false,message: error})
     
-    let error
-    const validation=await customerJoi.validateAsync(data).then(()=>true).catch((err)=>{error=err.message;return null})
-    if(!validation) return res.status(400).send({  status: false,message: error})
+        const findUser = await customerModel.findOne({$or:[{email:data.email},{phone:data.phone}]})
 
-    const findUser = await customerModel.findOne({ email:data.email,phone:data.phone })
-    if(findUser){
-	    if(findUser.email==data.email.trim()) {return res.status(400).send({status:false,message:"email already exist"})}
-	    if(findUser.phone==data.phone.trim()) {return res.status(400).send({status:false,message:"phone already exist"})}
-	  }
-
-
-    const createData=await customerModel.create(data)
-
-    return res.status(200).send({status:false,message:createData})
+        if(findUser){
+    	    if(findUser.email==data.email.trim()) {return res.status(400).send({status:false,message:"email already exist"})}
+    	    if(findUser.phone==data.phone.trim()) {return res.status(400).send({status:false,message:"phone already exist"})}
+    	  }
+    
+    
+        const createData=await customerModel.create(data)
+    
+        return res.status(200).send({status:false,message:createData})
+} catch (error) {
+    return res.status(500).send({ status: false, message: error.message})
+}
 }
 
+//////===================================login====================================
 const loginCustomer=async (req,res)=>{
 try {
         let data=req.body
