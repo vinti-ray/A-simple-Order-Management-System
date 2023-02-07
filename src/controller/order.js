@@ -28,7 +28,7 @@ try {
                 cashBack=cashBack+(data.price*(10/100))
             }
     
-            if(findCustomer.status=="platinum"){
+            if(findCustomer.status=="platinum"){ 
                 data.price=(data.price)-(data.price*(20/100))
                 data.discount=20
                 cashBack=cashBack+(data.price*(20/100))

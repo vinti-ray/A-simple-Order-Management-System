@@ -20,7 +20,7 @@ const loginJoi=Joi.object({
 
 const orderJoi=Joi.object({
     title : Joi.string().trim().required(),
-    description:Joi.string().trim().required(),
+    cartId:Joi.string().trim().required(),
     price:Joi.number().required(),
     discount:Joi.number().strict().optional()
 })
