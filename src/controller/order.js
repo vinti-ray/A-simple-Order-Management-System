@@ -53,7 +53,7 @@ try {
             //update customer stautus and discount 
             const updateCustomer=await customerModel.findByIdAndUpdate(req.decode.customerId,{$set:{status:status,cashBack:cashBack},$inc:{orders:1}})
     
-            //email functionality not working
+            //email functionality 
             if(findCustomer.orders==9){
                 
                         let mailTransporter = nodemailer.createTransport({
