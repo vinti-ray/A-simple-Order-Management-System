@@ -1,6 +1,6 @@
-##A simple Order Management System
+## A simple Order Management System
 
-#Spring boot application with the below requirements :
+# Spring boot application with the below requirements :
 
 
 
